@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
 const events = [
-  { id: 1, name: "Seminar AI", category: "Seminar", date: "2026-01-10", status: "Aktif" },
-  { id: 2, name: "Workshop React", category: "Workshop", date: "2026-02-15", status: "Nonaktif" },
-  { id: 3, name: "Talkshow Startup", category: "Talkshow", date: "2026-03-20", status: "Aktif" },
+  { id: 1, name: "Seminar AI", category: "Seminar", date: "2026-01-10" },
+  { id: 2, name: "Workshop React", category: "Workshop", date: "2026-02-15" },
+  { id: 3, name: "Talkshow Startup", category: "Talkshow", date: "2026-03-20" },
 ];
 
 export default function EventIndex() {
@@ -72,18 +72,6 @@ export default function EventIndex() {
                     month: "long",
                     year: "numeric",
                   })}
-                </td>
-
-                <td className="px-4 py-3.5">
-                  <span
-                    className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                      item.status === "Aktif"
-                        ? "bg-emerald-50 text-emerald-700"
-                        : "bg-red-50 text-red-700"
-                    }`}
-                  >
-                    {item.status === "Aktif" ? "● Aktif" : "● Nonaktif"}
-                  </span>
                 </td>
 
                 <td className="px-4 py-3.5">

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
 const speakers = [
-  { id: 1, name: "Lhuqita Fazry", job: "Software Engineer", email: "lhuqita@mail.com", status: "Aktif" },
-  { id: 2, name: "Danang Avan M", job: "UI/UX Designer", email: "danang@mail.com", status: "Nonaktif" },
-  { id: 3, name: "M. Dendi Purwanto", job: "Product Manager", email: "dendi@mail.com", status: "Aktif" },
+  { id: 1, name: "Lhuqita Fazry", job: "Software Engineer", email: "lhuqita@mail.com" },
+  { id: 2, name: "Danang Avan M", job: "UI/UX Designer", email: "danang@mail.com" },
+  { id: 3, name: "M. Dendi Purwanto", job: "Product Manager", email: "dendi@mail.com" },
 ];
 
 function Avatar({ name }: { name: string }) {
@@ -34,7 +34,7 @@ export default function PembicaraIndex() {
               Manajemen
             </span>
           </div>
-          <h1 className="text-3xl font-bold text-[#1a0a10] tracking-tight">Pembicara</h1>
+          <h1 className="text-2xl font-bold text-[#1a0a10] tracking-tight">Pembicara</h1>
           <p className="text-sm text-gray-400 mt-1">Kelola pembicara event Invofest</p>
         </div>
 
@@ -52,7 +52,7 @@ export default function PembicaraIndex() {
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-100">
-              {["No", "Pembicara", "Pekerjaan", "Email", "Status", "Aksi"].map((h) => (
+              {["No", "Pembicara", "Pekerjaan", "Email", "Status"].map((h) => (
                 <th
                   key={h}
                   className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-4 py-2.5 text-left whitespace-nowrap"
@@ -85,18 +85,6 @@ export default function PembicaraIndex() {
                 </td>
 
                 <td className="px-4 py-3.5 text-xs text-gray-500">{item.email}</td>
-
-                <td className="px-4 py-3.5">
-                  <span
-                    className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                      item.status === "Aktif"
-                        ? "bg-emerald-50 text-emerald-700"
-                        : "bg-red-50 text-red-700"
-                    }`}
-                  >
-                    {item.status === "Aktif" ? "● Aktif" : "● Nonaktif"}
-                  </span>
-                </td>
 
                 <td className="px-4 py-3.5">
                   <div className="flex gap-2">

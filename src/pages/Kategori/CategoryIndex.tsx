@@ -3,46 +3,27 @@ import { Link } from "react-router-dom";
 type Category = {
   id: number;
   name: string;
-  status: "Aktif" | "Nonaktif";
 };
 
 const categories: Category[] = [
-  { id: 1, name: "Seminar", status: "Aktif" },
-  { id: 2, name: "Workshop", status: "Aktif" },
-  { id: 3, name: "Competition", status: "Nonaktif" },
+  { id: 1, name: "Seminar" },
+  { id: 2, name: "Workshop" },
+  { id: 3, name: "Competition" },
 ];
 
-const TABLE_HEADERS = ["No", "Nama Kategori", "Status", "Aksi"];
-
-function StatusBadge({ status }: { status: Category["status"] }) {
-  const isAktif = status === "Aktif";
-  return (
-    <span
-      className={`text-xs font-semibold px-3 py-1 rounded-full ${
-        isAktif ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"
-      }`}
-    >
-      {isAktif ? "● Aktif" : "● Nonaktif"}
-    </span>
-  );
-}
+const TABLE_HEADERS = ["No", "Nama Kategori", "Aksi"];
 
 function CategoryRow({ item, index }: { item: Category; index: number }) {
   return (
     <tr className="border-b border-gray-50 hover:bg-rose-50/40 transition-colors">
-      <td className="px-4 py-3.5 text-sm text-gray-300 w-10">{index + 1}</td>
+      <td className="px-4 py-3.5 text-sm text-gray-400 w-10">{index + 1}</td>
 
       <td className="px-4 py-3.5 text-sm font-semibold text-[#1a0a10]">
         {item.name}
       </td>
 
       <td className="px-4 py-3.5">
-        <StatusBadge status={item.status} />
-      </td>
-
-      <td className="px-4 py-3.5">
         <div className="flex gap-2">
-          {/* Tombol Edit diubah menjadi Link agar bisa navigasi ke halaman edit */}
           <Link 
             to={`/dashboard/kategori/edit/${item.id}`}
             className="text-xs font-semibold px-3 py-1.5 rounded-md border border-yellow-300 bg-yellow-50 text-yellow-700 hover:bg-yellow-100 transition-colors"
@@ -75,40 +56,39 @@ export default function CategoryIndex() {
           <p className="text-sm text-gray-400 mt-1">Kelola kategori event Invofest</p>
         </div>
 
-        {/* 
-         
-        */}
         <Link
           to="/dashboard/kategori/create"
-          className="flex items-center gap-1.5 bg-[#7B1D3F] hover:bg-[#9e2550] text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 bg-[#7B1D3F] hover:bg-[#9e2550] text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors shadow-sm"
         >
-          <span className="text-base leading-none">+</span>
+          <span className="text-lg leading-none">+</span>
           Tambah Kategori
         </Link>
       </div>
 
       {/* TABLE CARD */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-gray-50 border-b border-gray-100">
-              {TABLE_HEADERS.map((h) => (
-                <th
-                  key={h}
-                  className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-4 py-2.5 text-left whitespace-nowrap"
-                >
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-100">
+                {TABLE_HEADERS.map((h) => (
+                  <th
+                    key={h}
+                    className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-4 py-3 text-left whitespace-nowrap"
+                  >
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
 
-          <tbody>
-            {categories.map((item, index) => (
-              <CategoryRow key={item.id} item={item} index={index} />
-            ))}
-          </tbody>
-        </table>
+            <tbody>
+              {categories.map((item, index) => (
+                <CategoryRow key={item.id} item={item} index={index} />
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {/* Empty state */}
         {categories.length === 0 && (
@@ -119,9 +99,10 @@ export default function CategoryIndex() {
           </div>
         )}
 
-        <div className="px-4 py-3 border-t border-gray-50">
-          <span className="text-xs text-gray-300">
-            Menampilkan {categories.length} kategori
+        {/* Footer Info */}
+        <div className="px-4 py-3 border-t border-gray-50 bg-gray-50/30">
+          <span className="text-xs text-gray-400">
+            Menampilkan <b>{categories.length}</b> kategori terdaftar
           </span>
         </div>
       </div>
