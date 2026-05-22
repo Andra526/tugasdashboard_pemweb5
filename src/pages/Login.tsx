@@ -6,13 +6,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore"; 
 import Input from "../component/ui/Input";
 
+// 1. Update tipe data menjadi nim
 type FormData = {
-  email: string;
+  nim: string;
   password: string;
 };
 
+// 2. Update schema validasi untuk nim
 const schema = z.object({
-  email: z.string().email("Format email tidak valid").min(1, "Email harus diisi"),
+  nim: z.string().min(8, "NIM harus 8 karakter").max(8, "NIM harus 8 karakter"),
   password: z.string().min(8, "Password minimal harus 8 karakter"),
 });
 
@@ -31,12 +33,13 @@ export default function Login() {
     setTimeout(() => {
       setIsLoading(false);
       
-      if (data.email && data.password) {
+      // 3. Validasi spesifik untuk NIM 24090003
+      if (data.nim === "24090003" && data.password.length >= 8) {
         alert("Login Berhasil!");
-        login(data.email); 
+        login(data.nim); // Menyimpan nim ke store
         navigate("/dashboard");
       } else {
-        alert("Login gagal, silakan periksa kembali data anda");
+        alert("NIM atau Password salah!");
       }
     }, 2000);
   };
@@ -45,16 +48,17 @@ export default function Login() {
     <div className="w-full flex flex-col items-center">
       <div className="text-center mb-10">
         <h1 className="text-4xl font-bold text-[#7B1D3F]">Selamat Datang!</h1>
-        <p className="text-gray-400 mt-3 text-base">Silakan login untuk melanjutkan</p>
+        <p className="text-gray-400 mt-3 text-base">Silakan login menggunakan NIM Anda</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6" noValidate>
+        {/* 4. Update Input menjadi NIM */}
         <Input 
-          label="Email" 
-          name="email" 
+          label="NIM" 
+          name="nim" 
           register={register} 
-          error={errors.email?.message}
-          placeholder="email@anda.com"
+          error={errors.nim?.message}
+          placeholder="24090003"
         />
 
         <Input 
@@ -82,10 +86,6 @@ export default function Login() {
           >
             Kembali ke Beranda
           </button>
-        </div>
-
-        <div className="text-sm text-center text-slate-500 pt-2">
-          Belum punya akun? <Link to="/register" className="text-[#7B1D3F] font-bold hover:underline">Daftar</Link>
         </div>
       </form>
     </div>

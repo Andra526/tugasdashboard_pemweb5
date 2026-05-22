@@ -3,32 +3,31 @@ import { persist } from "zustand/middleware";
 
 interface AuthState {
   isAuthenticated: boolean;
-  user: string | null;
-  login: (username: string) => void;
+  nim: string | null; // Mengganti 'user' menjadi 'nim'
+  login: (nim: string) => void; // Fungsi login sekarang menerima nim
   logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-
       isAuthenticated: false,
-      user: null,
+      nim: null,
 
-      login: (username: string) => 
+      login: (nim: string) => 
         set({ 
           isAuthenticated: true, 
-          user: username 
+          nim: nim // Menyimpan NIM ke state global
         }),
 
       logout: () => 
         set({ 
           isAuthenticated: false, 
-          user: null 
+          nim: null 
         }),
     }),
     {
-      name: "auth-storage",
+      name: "auth-storage", // Data ini tersimpan di LocalStorage browser
     }
   )
 );
