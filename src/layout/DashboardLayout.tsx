@@ -10,6 +10,7 @@ export default function DashboardLayout() {
     { name: 'Category Event', path: '/dashboard/kategori', icon: ListFilter },
     { name: 'Event', path: '/dashboard/event', icon: CalendarDays },
     { name: 'Pembicara', path: '/dashboard/pembicara', icon: Users },
+    { name: 'User', path: '/dashboard/user', icon: Users },
   ];
 
   const isActive = (path: string) => {

@@ -18,6 +18,11 @@ import EventCreate from "./pages/event/EventCreate";
 import PembicaraCreate from "./pages/pembicara/PembicaraCreate"; 
 import PembicaraIndex from "./pages/pembicara/PembicaraIndex";
 
+// --- IMPORT KOMPONEN USER ---
+import UserIndex from "./pages/user/UserIndex";
+import UserCreate from "./pages/user/UserCreate";
+import UserEdit from "./pages/user/UserEdit";
+
 import MainLayout from "./layout/MainLayout";
 import AuthLayout from "./layout/AuthLayout";
 import DashboardLayout from "./layout/DashboardLayout";
@@ -48,23 +53,25 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardLayout />}>
 
-            {/* URL: /dashboard */}
             <Route index element={<Dashboard />} />
 
-            {/* Category - URL: /dashboard/kategori */}
+            {/* Category */}
             <Route path="kategori" element={<CategoryIndex />} />
             <Route path="kategori/create" element={<CategoryCreate />} />
-            
-            {/* TAMBAHKAN INI UNTUK EDIT: URL /dashboard/kategori/edit/1 */}
             <Route path="kategori/edit/:id" element={<div>Halaman Edit Kategori</div>} />
 
-            {/* URL: /dashboard/event */}
+            {/* Event */}
             <Route path="event" element={<EventIndex />} />
             <Route path="event/create" element={<EventCreate />} />
 
-            {/* URL: /dashboard/pembicara */}
+            {/* Pembicara */}
             <Route path="pembicara" element={<PembicaraIndex />} />
             <Route path="pembicara/create" element={<PembicaraCreate />} />
+
+            {/* --- ROUTE USER (DIPERBARUI) --- */}
+            <Route path="user" element={<UserIndex />} />
+            <Route path="user/create" element={<UserCreate />} />
+            <Route path="user/edit/:id" element={<UserEdit />} />
 
           </Route>
         </Route>
