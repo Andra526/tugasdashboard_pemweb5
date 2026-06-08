@@ -72,6 +72,7 @@ function App() {
             <Route path="user" element={<UserIndex />} />
             <Route path="user/create" element={<UserCreate />} />
             <Route path="user/edit/:id" element={<UserEdit />} />
+            
 
           </Route>
         </Route>

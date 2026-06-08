@@ -2,30 +2,24 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Tambahkan useNavigate
 import { Loader2 } from "lucide-react";
 
+// Tipe data disesuaikan: Hanya username (nama) dan password
 type FormData = {
   username: string;
-  email: string;
   password: string;
-  confirmPassword: string;
 };
 
-const schema = z
-  .object({
-    username: z.string().min(2, "Username harus diisi").max(100),
-    email: z.string().email("Format email tidak valid").min(1, "Email harus diisi"),
-    password: z.string().min(8, "Password minimal harus 8 karakter"),
-    confirmPassword: z.string().min(8, "Konfirmasi password minimal 8 karakter"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password tidak sama",
-    path: ["confirmPassword"],
-  });
+// Schema disesuaikan
+const schema = z.object({
+  username: z.string().min(2, "Nama harus diisi minimal 2 karakter"),
+  password: z.string().min(8, "Password minimal harus 8 karakter"),
+});
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate(); // Hook untuk navigasi setelah sukses
 
   const {
     register,
@@ -35,86 +29,67 @@ export default function Register() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     setIsLoading(true);
 
-    // Simulasi proses registrasi akun
-    setTimeout(() => {
+    try {
+      // Ganti URL '/api/register' dengan endpoint backend Anda
+      const response = await fetch("http://localhost:3000/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        alert("Akun Berhasil Dibuat! Silahkan Login.");
+        navigate("/login"); // Arahkan kembali ke halaman login
+      } else {
+        alert("Gagal mendaftar. Nama mungkin sudah terpakai.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Terjadi kesalahan koneksi ke server.");
+    } finally {
       setIsLoading(false);
-      console.log("Data Register:", data);
-      
-      alert("Akun Berhasil Dibuat! Silahkan Login.");
-      
-    }, 2000);
+    }
   };
 
   return (
     <div className="w-full flex flex-col items-center">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-[#7B1D3F]">Daftar Akun!</h1>
-        <p className="text-gray-400 mt-3 text-base">Lengkapi data untuk bergabung</p>
+        <p className="text-gray-400 mt-3 text-base">Masukkan nama dan password Anda</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-5">
         
-        {/* Input Username */}
+        {/* Input Nama (Sebagai Username) */}
         <div>
-          <label className="block text-sm font-bold text-slate-700 mb-2">Username</label>
+          <label className="block text-sm font-bold text-slate-700 mb-2">Nama</label>
           <input
             {...register("username")}
             disabled={isLoading}
-            className={`w-full px-4 py-3 border rounded-xl outline-none transition-all placeholder:text-slate-300 ${
+            className={`w-full px-4 py-3 border rounded-xl outline-none transition-all ${
               errors.username ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-[#7B1D3F]"
             }`}
-            placeholder="Username Anda"
+            placeholder="Nama Anda"
           />
           {errors.username && <p className="text-red-500 text-xs mt-1 pl-1">{errors.username.message}</p>}
         </div>
 
-        {/* Input Email */}
-        <div>
-          <label className="block text-sm font-bold text-slate-700 mb-2">Email</label>
-          <input
-            type="email"
-            {...register("email")}
-            disabled={isLoading}
-            className={`w-full px-4 py-3 border rounded-xl outline-none transition-all placeholder:text-slate-300 ${
-              errors.email ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-[#7B1D3F]"
-            }`}
-            placeholder="email@anda.com"
-          />
-          {errors.email && <p className="text-red-500 text-xs mt-1 pl-1">{errors.email.message}</p>}
-        </div>
-
         {/* Input Password */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-bold text-slate-700 mb-2">Password</label>
-            <input
-              type="password"
-              {...register("password")}
-              disabled={isLoading}
-              className={`w-full px-4 py-3 border rounded-xl outline-none transition-all placeholder:text-slate-300 ${
-                errors.password ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-[#7B1D3F]"
-              }`}
-              placeholder="........"
-            />
-            {errors.password && <p className="text-red-500 text-xs mt-1 pl-1">{errors.password.message}</p>}
-          </div>
-
-          <div>
-            <label className="block text-sm font-bold text-slate-700 mb-2">Konfirmasi</label>
-            <input
-              type="password"
-              {...register("confirmPassword")}
-              disabled={isLoading}
-              className={`w-full px-4 py-3 border rounded-xl outline-none transition-all placeholder:text-slate-300 ${
-                errors.confirmPassword ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-[#7B1D3F]"
-              }`}
-              placeholder="........"
-            />
-            {errors.confirmPassword && <p className="text-red-500 text-xs mt-1 pl-1">{errors.confirmPassword.message}</p>}
-          </div>
+        <div>
+          <label className="block text-sm font-bold text-slate-700 mb-2">Password</label>
+          <input
+            type="password"
+            {...register("password")}
+            disabled={isLoading}
+            className={`w-full px-4 py-3 border rounded-xl outline-none transition-all ${
+              errors.password ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-[#7B1D3F]"
+            }`}
+            placeholder="Minimal 8 karakter"
+          />
+          {errors.password && <p className="text-red-500 text-xs mt-1 pl-1">{errors.password.message}</p>}
         </div>
 
         <button
@@ -135,7 +110,6 @@ export default function Register() {
         <div className="text-sm text-center text-slate-500 pt-2">
           Sudah punya akun? <Link to="/login" className="text-[#7B1D3F] font-bold hover:underline">Login</Link>
         </div>
-
       </form>
     </div>
   );
